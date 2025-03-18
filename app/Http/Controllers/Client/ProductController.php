@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Http\Controllers\Client;
+
+use App\Helpers\ApiResponse;
+use App\Http\Controllers\Controller;
+use App\Services\ProductService;
+
+ class ProductController extends Controller
+{
+    public function __construct(public ProductService $productService)
+    {}
+
+    public function getProduct(int $id){
+        $response = $this->productService->getProduct($id);
+        return ApiResponse::success("success", $response);
+    }
+
+
+}

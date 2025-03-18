@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('stock_transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->enum('type', ['IN', 'OUT']); // Stock increase or decrease
+            $table->integer('quantity');
             $table->timestamps();
         });
     }
