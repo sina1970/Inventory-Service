@@ -7,10 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class BaseRepository implements BaseRepositoryInterface
 {
-    public function __construct(public $model)
-    {
-        $this->model = $model;
-    }
+    public function __construct(protected Model $model)
+    {}
 
     public function all(array $columns = ['*'], array $relations=[]):Collection
     {
@@ -35,7 +33,7 @@ class BaseRepository implements BaseRepositoryInterface
     public function update(int $id, array $data):void
     {
         $this->model->where('id', $id)->update([$data]);
-        
+
     }
 
     public function delete(int $id):void

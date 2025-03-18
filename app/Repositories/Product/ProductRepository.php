@@ -8,7 +8,7 @@ use App\Repositories\BaseRepositoryInterface;
 
 class ProductRepository extends BaseRepository implements BaseRepositoryInterface
 {
-    public function __construct(public Product $model){
+    public function __construct(Product $model){
         parent::__construct($model);
     }
 }
