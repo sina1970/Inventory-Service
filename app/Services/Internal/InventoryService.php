@@ -19,7 +19,7 @@ class InventoryService
 
     public function changeInventoryAndStock(StockTransactionTypeEnum $type, array $inventoryData)
     {
-        if($type == StockTransactionTypeEnum::IN)
+        if ($type == StockTransactionTypeEnum::IN)
             $this->increaseInventory($inventoryData);
         else
             $this->decreaseInventory($inventoryData);
@@ -29,13 +29,13 @@ class InventoryService
     {
         foreach ($inventoryData as $item) {
 
-            DB::transaction(function () use($item){
+            DB::transaction(function () use ($item) {
                 $inventory = $this->inventoryRepository->getInventoryRecordAndLockForUpdate($item["product_id"]);
-                if (!$inventory || $inventory->stock < $item['amount']){
+                if (!$inventory || $inventory->stock < $item['amount']) {
                     throw new \Exception("error");
                 }
                 $newStock = $inventory->stock - $item['amount'];
-                $this->inventoryRepository->update($inventory->id,['stock' => $newStock]);
+                $this->inventoryRepository->update($inventory->id, ['stock' => $newStock]);
                 $this->stockTransactionRepository->create([
                     'product_id' => $item['productId'],
                     'type' => StockTransactionTypeEnum::OUT->value,
@@ -47,22 +47,22 @@ class InventoryService
 
     public function increaseInventory(array $inventoryData): void
     {
-        foreach ($inventoryData as $item){
+        foreach ($inventoryData as $item) {
 
-            DB::transaction(function () use ($item){
+            DB::transaction(function () use ($item) {
                 $inventory = $this->inventoryRepository->getInventoryRecordAndLockForUpdate($item['productId']);
-                if(!$inventory){
+                if (!$inventory) {
                     throw new \Exception("not exists");
                 }
                 $newStock = $inventory->stock + $item['amount'];
                 $this->inventoryRepository->update($inventory->id, ['stock' => $newStock]);
 
                 $this->stockTransactionRepository->create([
-                'product_id' => $item['productId'],
-                'type' => StockTransactionTypeEnum::IN->value,
-                'quantity' => $item['amount']
-            ]);
-            },5);
+                    'product_id' => $item['productId'],
+                    'type' => StockTransactionTypeEnum::IN->value,
+                    'quantity' => $item['amount']
+                ]);
+            }, 5);
         }
 
     }
