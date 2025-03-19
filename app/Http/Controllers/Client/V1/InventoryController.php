@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Client\V1;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Services\InventoryService;
+use App\Services\Client\InventoryService;
 use Illuminate\Http\JsonResponse;
 
 class InventoryController extends Controller

@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Client\V1;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Services\ProductService;
+use App\Services\Client\ProductService;
 
- class ProductController extends Controller
+class ProductController extends Controller
 {
     public function __construct(public ProductService $productService)
     {}
