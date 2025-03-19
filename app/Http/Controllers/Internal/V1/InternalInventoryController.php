@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Internal\V1;
 
 use App\Enums\StockTransactionTypeEnum;
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Services\Internal\InventoryService;
 use Illuminate\Http\Request;
@@ -18,5 +19,6 @@ class InternalInventoryController extends Controller
             StockTransactionTypeEnum::from($request->type),
             $request->inventoryData
         );
+        return ApiResponse::success("success");
     }
 }
