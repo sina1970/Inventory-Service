@@ -17,6 +17,4 @@ class InventoryController extends Controller
         $response = $this->inventoryService->getInventoryStockByProductId($productId);
         return ApiResponse::success("success", $response);
     }
-
-
 }
