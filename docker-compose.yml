@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: Inventory-Service
-    restart: always
+    restart: unless-stopped
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
@@ -19,7 +19,7 @@ services:
   nginx:
     image: nginx:1.25.3
     container_name: laravel_nginx_inventory
-    restart: always
+    restart: unless-stopped
     ports:
       - "8000:80"
     volumes:
@@ -33,7 +33,7 @@ services:
   postgres:
     image: postgres:latest
     container_name: laravel_postgres_inventory
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
@@ -48,7 +48,7 @@ services:
   redis:
     image: redis:latest
     container_name: laravel_redis_inventory
-    restart: always
+    restart: unless-stopped
     ports:
       - "6379:6379"
     networks:

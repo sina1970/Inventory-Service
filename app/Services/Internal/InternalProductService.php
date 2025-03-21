@@ -15,6 +15,6 @@ class InternalProductService
             $productIdArray[] = $productList["productId"];
         }
 
-        $this->productRepository->
+        return $this->productRepository->findManyById($productIdArray);
     }
 }
