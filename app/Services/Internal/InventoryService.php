@@ -4,6 +4,7 @@ namespace App\Services\Internal;
 
 use App\Enums\StockTransactionTypeEnum;
 use App\Repositories\Inventory\InventoryRepositoryInterface;
+use App\Repositories\Setting\SettingRepositoryInterface;
 use App\Repositories\StockTransaction\StockTransactionRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -12,10 +13,9 @@ class InventoryService
 {
     public function __construct(
         public InventoryRepositoryInterface        $inventoryRepository,
-        public StockTransactionRepositoryInterface $stockTransactionRepository
-    )
-    {
-    }
+        public StockTransactionRepositoryInterface $stockTransactionRepository,
+        public SettingRepositoryInterface $settingRepositoryInterface,
+    ) {}
 
     public function changeInventoryAndStock(StockTransactionTypeEnum $type, array $inventoryData)
     {
@@ -27,6 +27,7 @@ class InventoryService
 
     public function decreaseInventory(array $inventoryData): void
     {
+        $productCountLimit = $this->settingRepositoryInterface->getKeyValues(['productCountLimit']);
         foreach ($inventoryData as $item) {
 
             DB::transaction(function () use ($item) {
@@ -42,6 +43,13 @@ class InventoryService
                     'quantity' => $item['amount']
                 ]);
             }, 5);
+        }
+    }
+
+    public function inventoryLimitNotifier($inventory, $productCountLimit)
+    {
+        if ($inventory->stock <= $productCountLimit) {
+            //send notif (dispatch a job or multiple)
         }
     }
 
@@ -64,6 +72,5 @@ class InventoryService
                 ]);
             }, 5);
         }
-
     }
 }
