@@ -3,6 +3,7 @@
 namespace App\Services\Internal;
 
 use App\Enums\StockTransactionTypeEnum;
+use App\Events\InventoryNotifEvent;
 use App\Repositories\Inventory\InventoryRepositoryInterface;
 use App\Repositories\Setting\SettingRepositoryInterface;
 use App\Repositories\StockTransaction\StockTransactionRepositoryInterface;
@@ -49,8 +50,9 @@ class InventoryService
     public function inventoryLimitNotifier($inventory, $productCountLimit)
     {
         if ($inventory->stock <= $productCountLimit) {
-            //send notif (dispatch a job or multiple)
+            InventoryNotifEvent::dispatch($inventory);
         }
+        
     }
 
     public function increaseInventory(array $inventoryData): void

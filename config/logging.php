@@ -127,6 +127,11 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'log-notif' => [
+            'level' => 'info',
+            'path' => storage_path('logs/notif.log')
+        ],
+
     ],
 
 ];
